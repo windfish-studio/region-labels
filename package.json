@@ -1,0 +1,38 @@
+{
+  "name": "region-labels",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/olagbk/region-labels.git"
+  },
+  "dependencies": {
+    "lodash": "latest",
+    "q": "1.4.1",
+    "tape": "latest",
+    "turf-random": "3.0.12",
+    "point-in-polygon": "1.0.1"
+  },
+  "clientDependencies": [
+    "lodash",
+    "q",
+    "tape",
+    "turf-random",
+    "point-in-polygon"
+  ],
+  "devDependencies": {
+    "browserify": "13.1.0",
+    "browserify-row-flow": "0.1.0",
+    "watchify": "3.7.0",
+    "scssify": "2.1.0",
+    "babelify": "7.3.0",
+    "gulp": "3.9.1",
+    "gulp-tap": "0.1.3",
+    "gulp-util": "3.0.7",
+    "gulp-live-server": "0.0.30",
+    "vinyl-source-stream": "1.1.0",
+    "resolve-file": "0.2.1",
+    "node.extend": "1.1.6",
+    "del": "latest"
+  }
+}
