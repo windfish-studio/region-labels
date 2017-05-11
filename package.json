@@ -11,14 +11,16 @@
     "q": "1.4.1",
     "tape": "latest",
     "turf-random": "3.0.12",
-    "point-in-polygon": "1.0.1"
+    "point-in-polygon": "1.0.1",
+    "regression": "1.4.0"
   },
   "clientDependencies": [
     "lodash",
     "q",
     "tape",
     "turf-random",
-    "point-in-polygon"
+    "point-in-polygon",
+    "regression"
   ],
   "devDependencies": {
     "browserify": "13.1.0",

@@ -69,10 +69,13 @@ xhr.onreadystatechange = function () {
                     ctx.fill();
 
                 });
-                var points = window.RegionLabel(allVertices);
+                var labelData = window.RegionLabel(allVertices);
                 ctx.fillStyle = "#000000";
-                _.each(points, function(p){
+                _.each(labelData[0].points, function(p){
                     ctx.fillRect(p[0],p[1],1,1);
+                });
+                _.each(labelData[1].points, function(p){
+                    ctx.fillRect(p[1],p[0],1,1);
                 });
 
                 //
