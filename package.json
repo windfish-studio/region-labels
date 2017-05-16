@@ -12,7 +12,8 @@
     "tape": "latest",
     "turf-random": "3.0.12",
     "point-in-polygon": "1.0.1",
-    "regression": "1.4.0"
+    "regression": "1.4.0",
+    "p2": "0.7.1"
   },
   "clientDependencies": [
     "lodash",
@@ -20,7 +21,8 @@
     "tape",
     "turf-random",
     "point-in-polygon",
-    "regression"
+    "regression",
+    "p2"
   ],
   "devDependencies": {
     "browserify": "13.1.0",
