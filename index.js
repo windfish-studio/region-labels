@@ -29,8 +29,7 @@ xhr.onreadystatechange = function () {
                 var newVertex = function(coords){
                     var margin = 50;
                     var scale = 50;
-                    var vtx = [margin + scale * (coords[0] - leftOffset), margin + scale * (-coords[1] + topOffset)];
-                    return vtx
+                    return [margin + scale * (coords[0] - leftOffset), margin + scale * (-coords[1] + topOffset)];
                 };
 
                 _.each(stateData, function (shape) {
