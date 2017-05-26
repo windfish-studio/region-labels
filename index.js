@@ -71,21 +71,6 @@ xhr.onreadystatechange = function () {
                 //var labelData = window.RegionLabel(allVertices);
                 window.RegionLabel(allVertices, ctx);
 
-
-                //
-                // ctx.beginPath();
-                //
-                // var curveStart = [startPoint[0] - leftOffset, -startPoint[1] + leftOffset];
-                //
-                // ctx.moveTo(curveStart[0], curveStart[1]);
-                //
-                // ctx.bezierCurveTo(curveStart[0] + 50, curveStart[0] + 40,
-                //     curveStart[0] + 80, curveStart[0] + 90,
-                //     curveStart[0] + 180, curveStart[0] + 130);
-                //
-                // ctx.stroke();
-                //
-
             }
 
         } else {
@@ -93,21 +78,3 @@ xhr.onreadystatechange = function () {
         }
     }
 };
-
-
-
-
-    // _.each(states, function(state){
-    //     _.each(state, function(shape, stateName){
-    //         var start = shape.shift();
-    //         ctx.fillStyle = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
-    //         ctx.beginPath();
-    //         ctx.moveTo(start[0] + 200, - start[1] + 100);
-    //         _.each(shape, function(vtx){
-    //             ctx.lineTo(vtx[0] + 200, - vtx[1] + 100);
-    //         });
-    //         ctx.closePath();
-    //         ctx.stroke();
-    //         ctx.fill();
-    //     })
-    // });
