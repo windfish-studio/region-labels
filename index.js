@@ -20,6 +20,7 @@ xhr.onreadystatechange = function () {
                 var stateNames = Object.keys(states);
                 var stateName = stateNames[_.random(0, stateNames.length - 1)];
                 var stateData = states[stateName];
+                //var stateData = [[[0,0], [0,8],[2,8],[2,7],[5, 7],[5,8],[7,8],[7,0]]];
                 var startPoint;
                 var leftmost = [];
                 var topmost = [];
@@ -45,6 +46,7 @@ xhr.onreadystatechange = function () {
                 topOffset = _.max(topmost);
 
                 _.each(stateData, function (shape) {
+                    var shapeVertices = [];
 
                     ctx.beginPath();
                     ctx.fillStyle = "#000000".replace(/0/g, function () {
@@ -52,9 +54,8 @@ xhr.onreadystatechange = function () {
                     });
 
                     startPoint = newVertex(shape.shift());
-
+                    shapeVertices.push(startPoint);
                     ctx.moveTo(startPoint[0], startPoint[1]);
-                    var shapeVertices = [];
 
                     _.each(shape, function (vtx) {
                         var nextPoint = newVertex(vtx);
