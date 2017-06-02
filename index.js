@@ -18,7 +18,7 @@ xhr.onreadystatechange = function () {
             if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');
                 var stateNames = Object.keys(states);
-                var stateName = 'Colorado';//stateNames[_.random(0, stateNames.length - 1)];
+                var stateName = stateNames[_.random(0, stateNames.length - 1)];
                 var stateData = states[stateName];
                 //var stateData = [[[0,0], [0,8],[2,8],[2,7],[5, 7],[5,8],[7,8],[7,0]]];
                 //var stateData = [[[0,0], [0,5], [3,5], [3,0]]];
