@@ -14,25 +14,17 @@ xhr.onreadystatechange = function () {
             var canvas = document.getElementById('c');
             canvas.width = document.body.clientWidth;
             canvas.height = document.body.clientHeight;
+            var ctx = canvas.getContext('2d');
 
-            if (canvas.getContext) {
-                var ctx = canvas.getContext('2d');
-                var stateNames = Object.keys(states);
-                var stateName = stateNames[_.random(0, stateNames.length - 1)];
-                var stateData = states[stateName];
-                //var stateData = [[[0,0], [0,8],[2,8],[2,7],[5, 7],[5,8],[7,8],[7,0]]];
-                //var stateData = [[[0,0], [0,5], [3,5], [3,0]]];
-                var startPoint;
-                var leftmost = [];
-                var topmost = [];
-                var leftOffset, topOffset;
-                var allVertices = [];
-
-                var newVertex = function(coords){
+            var renderState = function(state){
+                function newVertex(coords){
                     var margin = 50;
                     var scale = 50;
                     return [margin + scale * (coords[0] - leftOffset), margin + scale * (-coords[1] + topOffset)];
-                };
+                }
+                var stateData = states[state];
+
+                var leftOffset, topOffset,leftmost = [],topmost = [], allVertices = [];
 
                 _.each(stateData, function (shape) {
                     leftmost.push((_.minBy(shape, function (points) {
@@ -46,16 +38,17 @@ xhr.onreadystatechange = function () {
                 leftOffset = _.min(leftmost);
                 topOffset = _.max(topmost);
 
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
                 _.each(stateData, function (shape) {
                     var shapeVertices = [];
+                    var startPoint = newVertex(shape.shift());
+                    shapeVertices.push(startPoint);
 
-                    ctx.beginPath();
                     ctx.fillStyle = "#000000".replace(/0/g, function () {
                         return (~~(Math.random() * 16)).toString(16);
                     });
-
-                    startPoint = newVertex(shape.shift());
-                    shapeVertices.push(startPoint);
+                    ctx.beginPath();
                     ctx.moveTo(startPoint[0], startPoint[1]);
 
                     _.each(shape, function (vtx) {
@@ -70,10 +63,33 @@ xhr.onreadystatechange = function () {
                     ctx.fill();
 
                 });
-                //var labelData = window.RegionLabel(allVertices);
-                window.RegionLabel(allVertices, stateName, ctx);
+                var letterData =window.RegionLabel(allVertices, state, ctx);
 
-            }
+                _.each(letterData, function(obj) {
+                    ctx.save();
+                    ctx.translate(obj.point[0], obj.point[1]);
+                    ctx.rotate(obj.angle);
+                    ctx.fillStyle = "#ff0000";
+                    ctx.fillText(obj.letter, 0, 0);
+                    ctx.restore();
+                });
+            };
+
+            var stateNames = Object.keys(states);
+
+            var selectBox = document.createElement("select");
+            _.each(stateNames, function(name){
+                if (name === 'Alaska')
+                    return;
+                var opt = document.createElement("option");
+                opt.value = name;
+                opt.text = name;
+                selectBox.appendChild(opt);
+            });
+            document.body.appendChild(selectBox);
+            if (selectBox.value) renderState(selectBox.value);
+
+            selectBox.onchange = function(event){ renderState(event.target.value) }
 
         } else {
             console.log('Error: ' + xhr.status);
