@@ -71,7 +71,7 @@ xhr.onreadystatechange = function () {
 
                 });
                 //var labelData = window.RegionLabel(allVertices);
-                window.RegionLabel(allVertices, ctx);
+                window.RegionLabel(allVertices, stateName, ctx);
 
             }
 
