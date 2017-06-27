@@ -63,9 +63,10 @@ xhr.onreadystatechange = function () {
                     ctx.fill();
 
                 });
-                var letterData =window.RegionLabel(allVertices, state, ctx);
+                var labelData = window.RegionLabel(allVertices, state, ctx);
+                ctx.font = labelData.font + 'px sans-serif';
 
-                _.each(letterData, function(obj) {
+                _.each(labelData.letters, function(obj) {
                     ctx.save();
                     ctx.translate(obj.point[0], obj.point[1]);
                     ctx.rotate(obj.angle);
