@@ -63,7 +63,7 @@ xhr.onreadystatechange = function () {
                     ctx.fill();
 
                 });
-                var labelData = window.RegionLabel(allVertices, state, ctx);
+                var labelData = window.RegionLabel(allVertices, state);
                 ctx.font = labelData.font + 'px sans-serif';
 
                 _.each(labelData.letters, function(obj) {
