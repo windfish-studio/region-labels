@@ -10,11 +10,34 @@ xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
         if (xhr.status === 200) {
             var states = JSON.parse(xhr.responseText);
+            var rl;
 
             var canvas = document.getElementById('c');
             canvas.width = document.body.clientWidth;
             canvas.height = document.body.clientHeight;
             var ctx = canvas.getContext('2d');
+
+            var debugDrawSpline = function (splineData) {
+                var _s = splineData;
+
+                var numPerpSegments = _s.longestRay.length / 3;
+                var raySegment = _s.longestRay.length / numPerpSegments;
+                var rayHalf = _s.longestRay.length / 2;
+
+                var splineEquation = splineData.spline.equation;
+
+                var points = [];
+
+                for(var i = 0; i <= numPerpSegments; i++){
+                    var x = - rayHalf + i * raySegment;
+                    var y = splineEquation[2] * Math.pow(x,2) + splineEquation[1] * x + splineEquation[0];
+                    var p = rl.untranslate([x,y], _s.longestRay.center, _s.longestRay.slope);
+
+                    ctx.strokeRect(p[0], p[1], 1, 1);
+                }
+
+
+            };
 
             var renderState = function(state){
                 function newVertex(coords){
@@ -63,7 +86,13 @@ xhr.onreadystatechange = function () {
                     ctx.fill();
 
                 });
-                var labelData = window.RegionLabel(allVertices, state);
+
+                rl = new RegionLabel(allVertices, state);
+                var labelData = rl.getLabelData();
+
+                debugDrawSpline(rl.getSplineData());
+
+
                 ctx.font = labelData.font + 'px sans-serif';
 
                 _.each(labelData.letters, function(obj) {
