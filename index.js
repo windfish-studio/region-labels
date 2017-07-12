@@ -67,26 +67,51 @@ xhr.onreadystatechange = function () {
 
             var renderState = function(state){
 
-                function newVertex(coords){
-                    var margin = 50;
-                    var scale = 50;
-                    return [margin + scale * (coords[0] - leftOffset), margin + scale * (-coords[1] + topOffset)];
-                }
+                var newVertex = function(coords){
+
+                    var width = bbox[2] - bbox[0];
+                    var height = bbox[3] - bbox[1];
+
+                    var hRatio = canvas.width / width;
+                    var vRatio = -(canvas.height / height);
+                    var ratio  = Math.min ( hRatio, vRatio );
+
+                    return [ratio * (coords[0] - bbox[0]), ratio * (-coords[1] + bbox[1])];
+                };
+
                 var stateData = states[state];
 
-                var leftOffset, topOffset,leftmost = [],topmost = [], allVertices = [];
+                var bbox = [],
+                    leftmost = [],
+                    topmost = [],
+                    rightmost = [],
+                    bottommost = [],
+                    allVertices = [];
 
                 _.each(stateData, function (shape) {
+
                     leftmost.push((_.minBy(shape, function (points) {
                         return points[0]
                     }))[0]);
+
                     topmost.push((_.maxBy(shape, function (points) {
                         return points[1]
                     }))[1]);
+
+                    rightmost.push((_.maxBy(shape, function (points) {
+                        return points[0]
+                    }))[0]);
+
+                    bottommost.push((_.minBy(shape, function (points) {
+                        return points[1]
+                    }))[1]);
+
                 });
 
-                leftOffset = _.min(leftmost);
-                topOffset = _.max(topmost);
+                bbox.push(_.min(leftmost));
+                bbox.push(_.max(topmost));
+                bbox.push(_.max(rightmost));
+                bbox.push(_.min(bottommost));
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -139,6 +164,10 @@ xhr.onreadystatechange = function () {
                 opt.text = name;
                 selectBox.appendChild(opt);
             });
+            selectBox.style.position = 'fixed';
+            selectBox.style.top = '0px';
+            selectBox.style.left = '0px';
+
             document.body.appendChild(selectBox);
             if (selectBox.value) renderState(selectBox.value);
 
