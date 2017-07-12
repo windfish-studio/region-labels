@@ -18,28 +18,49 @@ xhr.onreadystatechange = function () {
             var ctx = canvas.getContext('2d');
 
             var debugDrawSpline = function (splineData) {
+
                 var _s = splineData;
 
-                var numPerpSegments = _s.longestRay.length / 3;
+                var numPerpSegments = 20;
                 var raySegment = _s.longestRay.length / numPerpSegments;
                 var rayHalf = _s.longestRay.length / 2;
 
                 var splineEquation = splineData.spline.equation;
 
-                var points = [];
-
+                ctx.beginPath();
                 for(var i = 0; i <= numPerpSegments; i++){
                     var x = - rayHalf + i * raySegment;
                     var y = splineEquation[2] * Math.pow(x,2) + splineEquation[1] * x + splineEquation[0];
                     var p = rl.untranslate([x,y], _s.longestRay.center, _s.longestRay.slope);
+                    if(i == 0){
 
-                    ctx.strokeRect(p[0], p[1], 1, 1);
+                        ctx.moveTo(p[0], p[1]);
+                    }else{
+                        ctx.lineTo(p[0], p[1]);
+                    }
                 }
+                ctx.stroke();
 
+                ctx.fillStyle = '#F00';
 
+                //draw spline entry/exit points
+                _.each(['firstPoint', 'lastPoint'], function (_k) {
+                    var p = splineData[_k].absolute;
+                    ctx.beginPath();
+                    ctx.arc(p[0], p[1], 5, 2 * Math.PI, 0);
+                    ctx.closePath();
+                    ctx.stroke();
+                    ctx.fill();
+                });
+
+                // ctx.beginPath();
+                // ctx.arc(splineData.lastPoint[0], splineData.lastPoint[1], 2, 2*Math.PI, 0);
+                // ctx.fill();
+                // ctx.closePath();
             };
 
             var renderState = function(state){
+
                 function newVertex(coords){
                     var margin = 50;
                     var scale = 50;
@@ -90,9 +111,6 @@ xhr.onreadystatechange = function () {
                 rl = new RegionLabel(allVertices, state);
                 var labelData = rl.getLabelData();
 
-                debugDrawSpline(rl.getSplineData());
-
-
                 ctx.font = labelData.font + 'px sans-serif';
 
                 _.each(labelData.letters, function(obj) {
@@ -103,6 +121,8 @@ xhr.onreadystatechange = function () {
                     ctx.fillText(obj.letter, 0, 0);
                     ctx.restore();
                 });
+
+                debugDrawSpline(rl.getSplineData());
             };
 
             var stateNames = Object.keys(states);
