@@ -27,6 +27,8 @@ xhr.onreadystatechange = function () {
 
                 var splineEquation = splineData.spline.equation;
 
+                ctx.strokeStyle = "#0F0";
+                ctx.lineWidth = 2;
                 ctx.beginPath();
                 for(var i = 0; i <= numPerpSegments; i++){
                     var x = - rayHalf + i * raySegment;
@@ -41,6 +43,15 @@ xhr.onreadystatechange = function () {
                 }
                 ctx.stroke();
 
+                ctx.strokeStyle = "#0FF";
+                ctx.beginPath();
+                var p = _s.longestRay.start;
+                ctx.moveTo(p[0], p[1]);
+                p = _s.longestRay.end;
+                ctx.lineTo(p[0], p[1]);
+                ctx.stroke();
+
+
                 ctx.fillStyle = '#F00';
 
                 //draw spline entry/exit points
@@ -49,14 +60,9 @@ xhr.onreadystatechange = function () {
                     ctx.beginPath();
                     ctx.arc(p[0], p[1], 5, 2 * Math.PI, 0);
                     ctx.closePath();
-                    ctx.stroke();
                     ctx.fill();
                 });
 
-                // ctx.beginPath();
-                // ctx.arc(splineData.lastPoint[0], splineData.lastPoint[1], 2, 2*Math.PI, 0);
-                // ctx.fill();
-                // ctx.closePath();
             };
 
             var renderState = function(state){
@@ -89,9 +95,8 @@ xhr.onreadystatechange = function () {
                     var startPoint = newVertex(shape.shift());
                     shapeVertices.push(startPoint);
 
-                    ctx.fillStyle = "#000000".replace(/0/g, function () {
-                        return (~~(Math.random() * 16)).toString(16);
-                    });
+                    ctx.fillStyle = "#CCC";
+                    ctx.strokeStyle = "#000";
                     ctx.beginPath();
                     ctx.moveTo(startPoint[0], startPoint[1]);
 
@@ -117,7 +122,7 @@ xhr.onreadystatechange = function () {
                     ctx.save();
                     ctx.translate(obj.point[0], obj.point[1]);
                     ctx.rotate(obj.angle);
-                    ctx.fillStyle = "#ff0000";
+                    ctx.fillStyle = "#000";
                     ctx.fillText(obj.letter, 0, 0);
                     ctx.restore();
                 });
@@ -129,8 +134,6 @@ xhr.onreadystatechange = function () {
 
             var selectBox = document.createElement("select");
             _.each(stateNames, function(name){
-                if (name === 'Alaska')
-                    return;
                 var opt = document.createElement("option");
                 opt.value = name;
                 opt.text = name;
