@@ -204,6 +204,12 @@ xhr.onreadystatechange = function () {
             if (selectBox.value)
                 renderState(selectBox.value);
 
+            window.addEventListener('resize', function () {
+                canvas.width = document.body.clientWidth;
+                canvas.height = document.body.clientHeight;
+                renderState(selectBox.value);
+            });
+
 
         } else {
             console.log('Error: ' + xhr.status);
