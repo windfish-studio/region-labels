@@ -67,19 +67,14 @@ xhr.onreadystatechange = function () {
 
             var renderState = function(state){
 
+                var width, height, pixelWidth, pixelHeight, pixelRatio, hRatio, vRatio;
+                var canvasDims = [];
+                var margin = 20;
+
                 var newVertex = function(coords){
-
-                    var width = bbox[2] - bbox[0];
-                    var height = bbox[3] - bbox[1];
-
-                    var margin = 20;
-                    var hRatio = (canvas.width - margin) / width;
-                    var vRatio = -((canvas.height - margin) / height);
-                    var ratio  = Math.min ( hRatio, vRatio );
-
                     return [
-                        margin/2 + ratio * (coords[0] - bbox[0]),
-                        margin/2 + ratio * (-coords[1] + bbox[1])
+                        ((vRatio == pixelRatio)? (canvasDims[0] / 2 - pixelWidth / 2) : 0) + margin/2 + pixelRatio * (coords[0] - bbox[0]),
+                        ((hRatio == pixelRatio)? (canvasDims[1] / 2 - pixelHeight / 2) : 0) + margin/2 + pixelRatio * (-coords[1] + bbox[1])
                     ];
                 };
 
@@ -116,6 +111,19 @@ xhr.onreadystatechange = function () {
                 bbox.push(_.max(topmost));
                 bbox.push(_.max(rightmost));
                 bbox.push(_.min(bottommost));
+
+                width = bbox[2] - bbox[0];
+                height = bbox[3] - bbox[1];
+
+                canvasDims.push(canvas.width - margin);
+                canvasDims.push(canvas.height - margin);
+
+                hRatio = canvasDims[0] / width;
+                vRatio = -(canvasDims[1] / height);
+
+                pixelRatio = Math.min ( hRatio, vRatio );
+                pixelWidth = pixelRatio * width;
+                pixelHeight = pixelRatio * -height;
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
