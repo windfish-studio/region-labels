@@ -11,6 +11,7 @@ xhr.onreadystatechange = function () {
         if (xhr.status === 200) {
             var states = JSON.parse(xhr.responseText);
             var rl;
+            var drawDebug = false;
 
             var canvas = document.getElementById('c');
             canvas.width = document.body.clientWidth;
@@ -35,7 +36,6 @@ xhr.onreadystatechange = function () {
                     var y = splineEquation[2] * Math.pow(x,2) + splineEquation[1] * x + splineEquation[0];
                     var p = rl.untranslate([x,y], _s.longestRay.center, _s.longestRay.slope);
                     if(i == 0){
-
                         ctx.moveTo(p[0], p[1]);
                     }else{
                         ctx.lineTo(p[0], p[1]);
@@ -72,11 +72,15 @@ xhr.onreadystatechange = function () {
                     var width = bbox[2] - bbox[0];
                     var height = bbox[3] - bbox[1];
 
-                    var hRatio = canvas.width / width;
-                    var vRatio = -(canvas.height / height);
+                    var margin = 20;
+                    var hRatio = (canvas.width - margin) / width;
+                    var vRatio = -((canvas.height - margin) / height);
                     var ratio  = Math.min ( hRatio, vRatio );
 
-                    return [ratio * (coords[0] - bbox[0]), ratio * (-coords[1] + bbox[1])];
+                    return [
+                        margin/2 + ratio * (coords[0] - bbox[0]),
+                        margin/2 + ratio * (-coords[1] + bbox[1])
+                    ];
                 };
 
                 var stateData = states[state];
@@ -152,11 +156,13 @@ xhr.onreadystatechange = function () {
                     ctx.restore();
                 });
 
-                debugDrawSpline(rl.getSplineData());
+                if(drawDebug)
+                    debugDrawSpline(rl.getSplineData());
             };
 
             var stateNames = Object.keys(states);
 
+            //add state select box
             var selectBox = document.createElement("select");
             _.each(stateNames, function(name){
                 var opt = document.createElement("option");
@@ -164,14 +170,32 @@ xhr.onreadystatechange = function () {
                 opt.text = name;
                 selectBox.appendChild(opt);
             });
-            selectBox.style.position = 'fixed';
-            selectBox.style.top = '0px';
-            selectBox.style.left = '0px';
 
-            document.body.appendChild(selectBox);
-            if (selectBox.value) renderState(selectBox.value);
+            selectBox.addEventListener('change', function(event){ renderState(event.target.value) });
 
-            selectBox.onchange = function(event){ renderState(event.target.value) }
+            //add debug draw textbox
+            var debugCbContainer = document.createElement('label');
+
+            var debugCb = document.createElement('input');
+            debugCb.type = 'checkbox';
+            debugCb.addEventListener('change', function (event) {
+                drawDebug = event.target.checked;
+                renderState(selectBox.value);
+            });
+
+            var container = document.createElement('div');
+            container.className = 'inputs';
+
+            debugCbContainer.appendChild(document.createTextNode('Draw Debug Data'));
+
+            debugCbContainer.appendChild(debugCb);
+            container.appendChild(selectBox);
+            container.appendChild(debugCbContainer);
+            document.body.appendChild(container);
+
+            if (selectBox.value)
+                renderState(selectBox.value);
+
 
         } else {
             console.log('Error: ' + xhr.status);
