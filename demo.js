@@ -13,9 +13,10 @@ xhr.onreadystatechange = function () {
             var rl;
             var drawDebug = false;
 
-            var canvas = document.getElementById('c');
+            var canvas = document.createElement('canvas');
             canvas.width = document.body.clientWidth;
             canvas.height = document.body.clientHeight;
+            document.body.appendChild(canvas);
             var ctx = canvas.getContext('2d');
 
             var debugDrawSpline = function (splineData) {
@@ -151,18 +152,10 @@ xhr.onreadystatechange = function () {
                 });
 
                 rl = new RegionLabel(allVertices, state);
-                var labelData = rl.getLabelData();
 
-                ctx.font = labelData.font + 'px sans-serif';
-
-                _.each(labelData.letters, function(obj) {
-                    ctx.save();
-                    ctx.translate(obj.point[0], obj.point[1]);
-                    ctx.rotate(obj.angle);
-                    ctx.fillStyle = "#000";
-                    ctx.fillText(obj.letter, 0, 0);
-                    ctx.restore();
-                });
+                //draw letters
+                var labelCanvas = rl.drawLabel([canvas.width, canvas.height]);
+                ctx.drawImage(labelCanvas, 0, 0);
 
                 if(drawDebug)
                     debugDrawSpline(rl.getSplineData());
