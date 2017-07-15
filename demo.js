@@ -161,7 +161,7 @@ xhr.onreadystatechange = function () {
                     debugDrawSpline(rl.getSplineData());
             };
 
-            var stateNames = Object.keys(states);
+            var stateNames = _.sortBy(Object.keys(states));
 
             //add state select box
             var selectBox = document.createElement("select");
