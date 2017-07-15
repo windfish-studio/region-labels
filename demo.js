@@ -79,7 +79,7 @@ xhr.onreadystatechange = function () {
                     ];
                 };
 
-                var stateData = states[state];
+                var stateData = _.cloneDeep(states[state]);
 
                 var bbox = [],
                     leftmost = [],
