@@ -19,53 +19,6 @@ xhr.onreadystatechange = function () {
             document.body.appendChild(canvas);
             var ctx = canvas.getContext('2d');
 
-            var debugDrawSpline = function (splineData) {
-
-                var _s = splineData;
-
-                var numPerpSegments = 20;
-                var raySegment = _s.longestRay.length / numPerpSegments;
-                var rayHalf = _s.longestRay.length / 2;
-
-                var splineEquation = splineData.spline.equation;
-
-                ctx.strokeStyle = "#0F0";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                for(var i = 0; i <= numPerpSegments; i++){
-                    var x = - rayHalf + i * raySegment;
-                    var y = splineEquation[2] * Math.pow(x,2) + splineEquation[1] * x + splineEquation[0];
-                    var p = rl.untranslate([x,y], _s.longestRay.center, _s.longestRay.slope);
-                    if(i == 0){
-                        ctx.moveTo(p[0], p[1]);
-                    }else{
-                        ctx.lineTo(p[0], p[1]);
-                    }
-                }
-                ctx.stroke();
-
-                ctx.strokeStyle = "#0FF";
-                ctx.beginPath();
-                var p = _s.longestRay.start;
-                ctx.moveTo(p[0], p[1]);
-                p = _s.longestRay.end;
-                ctx.lineTo(p[0], p[1]);
-                ctx.stroke();
-
-
-                ctx.fillStyle = '#F00';
-
-                //draw spline entry/exit points
-                _.each(['firstPoint', 'lastPoint'], function (_k) {
-                    var p = splineData[_k].absolute;
-                    ctx.beginPath();
-                    ctx.arc(p[0], p[1], 5, 2 * Math.PI, 0);
-                    ctx.closePath();
-                    ctx.fill();
-                });
-
-            };
-
             var renderState = function(state){
 
                 var width, height, pixelWidth, pixelHeight, pixelRatio, hRatio, vRatio;
@@ -157,8 +110,11 @@ xhr.onreadystatechange = function () {
                 var labelCanvas = rl.drawLabel([canvas.width, canvas.height]);
                 ctx.drawImage(labelCanvas, 0, 0);
 
-                if(drawDebug)
-                    debugDrawSpline(rl.getSplineData());
+                if(drawDebug){
+                    var debugCanvas = rl.debugDrawSpline([canvas.width, canvas.height]);
+                    ctx.drawImage(debugCanvas, 0, 0);
+                }
+
             };
 
             var stateNames = _.sortBy(Object.keys(states));
