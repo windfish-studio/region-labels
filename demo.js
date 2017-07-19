@@ -21,66 +21,35 @@ xhr.onreadystatechange = function () {
 
             var renderState = function(state){
 
-                var width, height, pixelWidth, pixelHeight, pixelRatio, hRatio, vRatio;
+                var pixelWidth, pixelHeight, pixelRatio, hRatio, vRatio;
                 var canvasDims = [];
                 var margin = 20;
 
                 var newVertex = function(coords){
                     return [
-                        ((vRatio == pixelRatio)? (canvasDims[0] / 2 - pixelWidth / 2) : 0) + margin/2 + pixelRatio * (coords[0] - bbox[0]),
-                        ((hRatio == pixelRatio)? (canvasDims[1] / 2 - pixelHeight / 2) : 0) + margin/2 + pixelRatio * (-coords[1] + bbox[1])
+                        ((vRatio == pixelRatio)? (canvasDims[0] / 2 - pixelWidth / 2) : 0) + margin/2 + pixelRatio * (coords[0] - bbox.minX),
+                        ((hRatio == pixelRatio)? (canvasDims[1] / 2 - pixelHeight / 2) : 0) + margin/2 + -pixelRatio * (coords[1] - bbox.maxY)
                     ];
                 };
 
                 var stateData = _.cloneDeep(states[state]);
 
-                var bbox = [],
-                    leftmost = [],
-                    topmost = [],
-                    rightmost = [],
-                    bottommost = [],
-                    allVertices = [];
-
-                _.each(stateData, function (shape) {
-
-                    leftmost.push((_.minBy(shape, function (points) {
-                        return points[0]
-                    }))[0]);
-
-                    topmost.push((_.maxBy(shape, function (points) {
-                        return points[1]
-                    }))[1]);
-
-                    rightmost.push((_.maxBy(shape, function (points) {
-                        return points[0]
-                    }))[0]);
-
-                    bottommost.push((_.minBy(shape, function (points) {
-                        return points[1]
-                    }))[1]);
-
-                });
-
-                bbox.push(_.min(leftmost));
-                bbox.push(_.max(topmost));
-                bbox.push(_.max(rightmost));
-                bbox.push(_.min(bottommost));
-
-                width = bbox[2] - bbox[0];
-                height = bbox[3] - bbox[1];
+                var geoCoords = Array.prototype.concat.apply([],stateData);
+                var bbox = RegionLabel.generateBoundingBox(geoCoords);
 
                 canvasDims.push(canvas.width - margin);
                 canvasDims.push(canvas.height - margin);
 
-                hRatio = canvasDims[0] / width;
-                vRatio = -(canvasDims[1] / height);
+                hRatio = canvasDims[0] / bbox.width;
+                vRatio = canvasDims[1] / bbox.height;
 
                 pixelRatio = Math.min ( hRatio, vRatio );
-                pixelWidth = pixelRatio * width;
-                pixelHeight = pixelRatio * -height;
+                pixelWidth = pixelRatio * bbox.width;
+                pixelHeight = pixelRatio * bbox.height;
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+                var allVertices = [];
                 _.each(stateData, function (shape) {
                     var shapeVertices = [];
                     var startPoint = newVertex(shape.shift());
