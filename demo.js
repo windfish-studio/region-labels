@@ -80,7 +80,7 @@ xhr.onreadystatechange = function () {
                 ctx.drawImage(labelCanvas, 0, 0);
 
                 if(drawDebug){
-                    var debugCanvas = rl.debugDrawSpline([canvas.width, canvas.height]);
+                    var debugCanvas = rl.debugDraw([canvas.width, canvas.height]);
                     ctx.drawImage(debugCanvas, 0, 0);
                 }
 
