@@ -14,7 +14,7 @@
     "point-in-polygon": "1.0.1",
     "regression": "1.4.0",
     "p2": "0.7.1",
-    "canvas": "1.6.2"
+    "canvas": "1.6.6"
   },
   "clientDependencies": [
     "lodash",
