@@ -21,59 +21,34 @@ xhr.onreadystatechange = function () {
 
             var renderState = function(state){
 
-                var pixelWidth, pixelHeight, pixelRatio, hRatio, vRatio;
-                var canvasDims = [];
-                var margin = 20;
-
-                var newVertex = function(coords){
-                    return [
-                        ((vRatio == pixelRatio)? (canvasDims[0] / 2 - pixelWidth / 2) : 0) + margin/2 + pixelRatio * (coords[0] - bbox.minX),
-                        ((hRatio == pixelRatio)? (canvasDims[1] / 2 - pixelHeight / 2) : 0) + margin/2 + -pixelRatio * (coords[1] - bbox.maxY)
-                    ];
-                };
-
                 var stateData = _.cloneDeep(states[state]);
 
-                var geoCoords = Array.prototype.concat.apply([],stateData);
-                var bbox = RegionLabel.generateBoundingBox(geoCoords);
+                rl = new RegionLabel(stateData, state, {
+                    margin: 20,
+                    canvas: canvas
+                });
 
-                canvasDims.push(canvas.width - margin);
-                canvasDims.push(canvas.height - margin);
-
-                hRatio = canvasDims[0] / bbox.width;
-                vRatio = canvasDims[1] / bbox.height;
-
-                pixelRatio = Math.min ( hRatio, vRatio );
-                pixelWidth = pixelRatio * bbox.width;
-                pixelHeight = pixelRatio * bbox.height;
+                var stateCentered = rl.getVertices();
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                var allVertices = [];
-                _.each(stateData, function (shape) {
-                    var shapeVertices = [];
-                    var startPoint = newVertex(shape.shift());
-                    shapeVertices.push(startPoint);
-
+                _.each(stateCentered, function (shape) {
                     ctx.fillStyle = "#CCC";
                     ctx.strokeStyle = "#000";
                     ctx.beginPath();
-                    ctx.moveTo(startPoint[0], startPoint[1]);
 
-                    _.each(shape, function (vtx) {
-                        var nextPoint = newVertex(vtx);
-                        shapeVertices.push(nextPoint);
-                        ctx.lineTo(nextPoint[0], nextPoint[1]);
+                    _.each(shape, function (vtx, idx) {
+                        if(idx == 0)
+                            ctx.moveTo(vtx[0], vtx[1]);
+                        else
+                            ctx.lineTo(vtx[0], vtx[1]);
                     });
-                    allVertices.push(shapeVertices);
 
                     ctx.closePath();
                     ctx.stroke();
                     ctx.fill();
 
                 });
-
-                rl = new RegionLabel(allVertices, state);
 
                 //draw letters
                 var labelCanvas = rl.drawLabel([canvas.width, canvas.height]);
