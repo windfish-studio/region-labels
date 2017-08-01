@@ -51,11 +51,11 @@ xhr.onreadystatechange = function () {
                 });
 
                 //draw letters
-                var labelCanvas = rl.drawLabel([canvas.width, canvas.height]);
+                var labelCanvas = rl.drawLabel();
                 ctx.drawImage(labelCanvas, 0, 0);
 
                 if(drawDebug){
-                    var debugCanvas = rl.debugDraw([canvas.width, canvas.height]);
+                    var debugCanvas = rl.debugDraw();
                     ctx.drawImage(debugCanvas, 0, 0);
                 }
 
