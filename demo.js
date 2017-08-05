@@ -26,8 +26,7 @@ var getData = function(fileName){
     return _d.promise;
 };
 
-
-var data_ps = []
+var data_ps = [];
 data_ps.push(getData('geo'));
 data_ps.push(getData('edge_cases'));
 
@@ -37,7 +36,6 @@ q.all(data_ps).then(function (data_ar) {
     _.each(data_ar, function (demo_obj) {
         _.merge(states, demo_obj);
     });
-
 
     var canvas = document.createElement('canvas');
     canvas.width = document.body.clientWidth;
