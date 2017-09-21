@@ -29,6 +29,7 @@ var getData = function(fileName){
 var data_ps = [];
 data_ps.push(getData('geo'));
 data_ps.push(getData('edge_cases'));
+data_ps.push(getData('edge_case_geo'));
 
 q.all(data_ps).then(function (data_ar) {
 
