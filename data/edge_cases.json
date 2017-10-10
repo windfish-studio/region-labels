@@ -1,8 +1,10 @@
 {
-  "test_vertical_rect": [[[0,0], [0,2], [1,2], [1,0], [0,0]]],
-  "test_horizontal_rect": [[[0,0], [0,1], [2,1], [2,0], [0,0]]],
-  "test_perfect_square": [[[0,0], [0,1], [1,1], [1,0], [0,0]]],
-  "test_imperfect_horizontal_rect": [[
+"type": "FeatureCollection",
+"features": [
+  { "type": "Feature", "properties": {"NAME": "test_vertical_rect"}, "geometry": { "type": "Polygon", "coordinates": [ [ [0,0], [0,2], [1,2], [1,0], [0,0] ] ] } },
+  { "type": "Feature", "properties": {"NAME": "test_horizontal_rect"}, "geometry": { "type": "Polygon", "coordinates": [ [ [0,0], [0,1], [2,1], [2,0], [0,0] ] ] } },
+  { "type": "Feature", "properties": {"NAME": "test_perfect_square"}, "geometry": { "type": "Polygon", "coordinates": [ [ [0,0], [0,1], [1,1], [1,0], [0,0] ] ] } },
+  { "type": "Feature", "properties": {"NAME": "test_imperfect_horizontal_rect"}, "geometry": { "type": "Polygon", "coordinates": [ [
     [0,0],
     [0,1],
     [2,1],
@@ -10,13 +12,13 @@
     [1,0.005],
     [1,0],
     [0,0]
-  ]],
-
-  "test_wrap_longitude": [[
+  ] ] } },
+  { "type": "Feature", "properties": {"NAME": "test_wrap_longitude"}, "geometry": { "type": "Polygon", "coordinates": [ [
     [-179, 0],
     [179, 0],
     [179, 1],
     [-179, 1],
     [-179, 0]
-  ]]
+  ] ] } }
+]
 }

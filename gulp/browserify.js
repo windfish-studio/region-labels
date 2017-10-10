@@ -95,13 +95,22 @@ var make_bundle = function(opts){
 };
 
 gulp.task("bsfy", function(){
-    var deferred = q.defer();
-    del(['dist/index.js']).then(function () {
+    var idx_deferred = q.defer();
+    var demo_deferred = q.defer();
+    del(['dist/index.js'], ['dist/demo.js']).then(function () {
         make_bundle({
             out_file: "dist/index.js",
             bsfy_opts: {entries: "lib/index.js"},
             require: npm_deps
-        }).on('end', deferred.resolve);
+        }).on('end', idx_deferred.resolve);
+
+        make_bundle({
+            out_file: "dist/demo.js",
+            bsfy_opts: {entries: "demo.js"},
+            require: npm_deps
+        }).on('end', demo_deferred.resolve);
     });
-    return deferred.promise;
+
+    return q.all([idx_deferred.promise, demo_deferred.promise]);
 });
+
