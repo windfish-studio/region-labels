@@ -2,7 +2,7 @@
 
 var _ = require("lodash");
 var q = require("q");
-var data_ar = require('./data/index.js');
+var raw_data = require('./data/index.js') ;
 
 var rl;
 var drawDebug = false;
@@ -12,43 +12,59 @@ canvas.width = document.body.clientWidth;
 canvas.height = document.body.clientHeight;
 document.body.appendChild(canvas);
 var ctx = canvas.getContext('2d');
-var features = {};
-_.each(data_ar, function (featureCollection) {
-    _.each(featureCollection.features, function (feature) {
-        features[feature.properties.NAME] = feature;
-    });
-});
+var labelTargets = {};
 
-var renderFeature = function(selected_feature){
+//recursively iterate through the demo data and fill the dropdown with options
+function parseDemoData(_d) {
+    if(_d instanceof Array){
+        _.each(_d, function (datum) {
+            parseDemoData(datum);
+        });
+    }else if(_d instanceof Object){
+        if(_d.type)
+            switch(_d.type){
+                case 'Grouping':
+                    labelTargets[_d.optionsName] = _d;
+                    break;
+                case 'FeatureCollection':
+                    parseDemoData(_d.features);
+                    break;
+                case 'Feature':
+                    labelTargets[_d.properties.NAME] = _d;
+                    break;
+            }
+        else
+            _.each(_d, function (_v) {
+                parseDemoData(_v);
+            });
+    }
+}
 
-    rl = new RegionLabel(_.cloneDeep(features[selected_feature]), selected_feature, {
-        margin: 20,
-        canvas: canvas
-    });
+parseDemoData(raw_data);
 
-    var featureCentered = rl.getVertices();
+var renderFeature = function(selected_target){
+
+    var target = labelTargets[selected_target];
+    if(target.type == 'Grouping'){
+        rl = new RegionLabel(_.cloneDeep(target.groupCollection), {
+            margin: 20,
+            canvas: canvas,
+            label: target.label,
+            rejectFeatures: target.rejectFeatures
+        });
+    }else{
+        rl = new RegionLabel(_.cloneDeep(labelTargets[selected_target]), {
+            margin: 20,
+            canvas: canvas,
+            label: selected_target
+        });
+    }
+
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    _.each(featureCentered, function (poly, s_idx) {
-        ctx.fillStyle = "#CCC";
-        ctx.strokeStyle = "#000";
-        ctx.beginPath();
-
-        _.each(poly, function (shape) {
-            _.each(shape, function (vtx, v_idx) {
-                if(v_idx == 0)
-                    ctx.moveTo(vtx[0], vtx[1]);
-                else
-                    ctx.lineTo(vtx[0], vtx[1]);
-            });
-            ctx.closePath();
-        });
-
-        ctx.stroke();
-        ctx.fill();
-
-    });
+    var geometryCanvas = rl.drawGeometry();
+    ctx.drawImage(geometryCanvas, 0, 0);
 
     //draw letters
     var labelCanvas = rl.drawLabel();
@@ -61,7 +77,7 @@ var renderFeature = function(selected_feature){
 
 };
 
-var geoKeys = _.sortBy(Object.keys(features));
+var geoKeys = _.sortBy(Object.keys(labelTargets));
 
 //add state select box
 var selectBox = document.createElement("select");
