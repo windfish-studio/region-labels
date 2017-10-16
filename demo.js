@@ -50,7 +50,7 @@ var renderFeature = function(selected_target){
             margin: 20,
             canvas: canvas,
             label: target.label,
-            rejectFeatures: target.rejectFeatures
+            excludeFeatures: target.excludeFeatures
         });
     }else{
         rl = new RegionLabel(_.cloneDeep(labelTargets[selected_target]), {

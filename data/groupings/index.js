@@ -4,7 +4,7 @@ module.exports = [
         "optionsName": "test_roanoke_excluding_inner",
         "label": "Roanoke",
         "groupCollection": require('./roanoke_va.json'),
-        "rejectFeatures": function (_props) {
+        "excludeFeatures": function (_props) {
             if(_props.AFFGEOID == '0500000US51161')
                 return false;
             else
