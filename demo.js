@@ -63,11 +63,11 @@ var renderFeature = function(selected_target){
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    var geometryCanvas = rl.drawGeometry();
+    var geometryCanvas = rl.drawGeometries();
     ctx.drawImage(geometryCanvas, 0, 0);
 
     //draw letters
-    var labelCanvas = rl.drawLabel();
+    var labelCanvas = rl.drawLabels();
     ctx.drawImage(labelCanvas, 0, 0);
 
     if(drawDebug){
