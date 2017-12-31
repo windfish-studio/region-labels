@@ -5,5 +5,6 @@ module.exports = [
   require('./reagan_tx.json'),
   require('./roanoke_va.json'),
   require('./wise_va.json'),
-  require('./anua.json')
+  require('./anua.json'),
+  require('./dukes_ma.json')
 ]
