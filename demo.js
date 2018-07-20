@@ -77,11 +77,9 @@ var renderFeature = function(selected_target){
 
 };
 
-var geoKeys = _.sortBy(Object.keys(labelTargets));
-
 //add state select box
 var selectBox = document.createElement("select");
-_.each(geoKeys, function(name){
+_.each(labelTargets, function(undefined, name){
     var opt = document.createElement("option");
     opt.value = name;
     opt.text = name;
