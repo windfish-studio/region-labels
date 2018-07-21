@@ -106,7 +106,7 @@ gulp.task("bsfy", function(){
 
         make_bundle({
             out_file: "dist/demo.js",
-            bsfy_opts: {entries: "demo.js"},
+            bsfy_opts: {entries: "demo/demo.js"},
             require: npm_deps
         }).on('end', demo_deferred.resolve);
     });
