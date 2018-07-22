@@ -1,11 +1,26 @@
 {
   "name": "region-labels",
-  "version": "0.0.1",
+  "version": "0.0.0",
+
+  "contributors": [
+    {
+      "name": "Alexander Pilafian",
+      "email": "sikanrong@gmail.com",
+      "url": "https://github.com/sikanrong"
+    },
+    {
+      "name": "Aleksandra Gąbka",
+      "email": "rivvel@gmail.com",
+      "url": "https://github.com/olagbk"
+    }
+  ],
+
   "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/olagbk/region-labels.git"
   },
+
   "dependencies": {
     "lodash": "latest",
     "q": "1.4.1",
