@@ -18,21 +18,12 @@ var labelTargets = collateGeometry(raw_data);
 
 var renderFeature = function(target){
 
-    if(target.type == 'Grouping'){
-        rl = new RegionLabel(_.cloneDeep(target.groupCollection), {
-            margin: 20,
-            canvas: canvas,
-            label: target.label,
-            excludeFeatures: target.excludeFeatures
-        });
-    }else{
-        rl = new RegionLabel(_.cloneDeep(target), {
-            margin: 20,
-            canvas: canvas,
-            label: target.label
-        });
-    }
-
+    rl = new RegionLabel(_.cloneDeep(target.groupCollection || target), {
+        margin: 20,
+        canvas: canvas,
+        label: target.label,
+        excludeFeatures: target.excludeFeatures
+    });
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 

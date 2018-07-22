@@ -6,7 +6,7 @@ var browserify = require('browserify');
 var scssify = require('scssify');
 var request = require('request');
 var q = require('q');
-var gutil = require('gulp-util');
+var chalk = require('chalk-log');
 var resolve = require('resolve-file');
 var del = require('del');
 
@@ -79,11 +79,11 @@ var make_bundle = function(opts){
     }
 
     function rebundle () {
-        gutil.log("Bundling "+out_filename+"...");
+        chalk.log("Bundling "+out_filename+"...");
         return b.bundle()
             .on('error', function (err) {
                 //On bundler errors print out the message in red and then continue (don't want to break the watchers)
-                gutil.log(gutil.colors.red('Browserify Bundling ERROR: ' + err.message));
+                chalk.error('Browserify Bundling ERROR: ' + err.message);
                 this.emit('end');
             })
             .pipe(source(out_filename))
