@@ -16,6 +16,13 @@ var roundArray = function(ar){
     })
 };
 
+var testLabelData = function (ld, t, expected_ar) {
+    t.equal(expected_ar.shift(), parseFloat(ld.fontSize.toFixed(2)));
+    t.deepEqual(expected_ar, roundArray(_.flattenDeep(ld.letters.map(function (_l) {
+        return [_l.angle, _l.width, _l.point];
+    }))));
+};
+
 var testSplineData = function (sd, t, expected_ar) {
     t.deepEqual(roundArray(_.flatten([sd.firstPoint, sd.lastPoint].map(function (_p) {
         return _p.absolute;
@@ -46,12 +53,23 @@ tape('should generate correct label data for Texas', function (t) {
         label: _o.label
     });
 
-    var sd = rl.getLabelGroups()[0].getSplineData();
+    var lg = rl.getLabelGroups()[0];
+    var sd = lg.getSplineData();
     testSplineData(sd, t, [
         69.76, 96.07, 211.07, 177.09,
         -21.73, 0.32, 0.00,
         6.88, 120.20, 238.62, 159.92,
         58.47, 167.16, 83.02, 23.88, 117.27, 172.00, 135.56, 65.28, 167.32, 227.98, 193.37, 75.93
+    ]);
+
+    var ld = lg.getLabelData();
+    testLabelData(ld, t, [
+        48.59,
+        0.37, 33.5, 72.34, 108.81,
+        0.46, 31.5, 102.51, 120.62,
+        0.54, 28.5, 129.87, 134.23,
+        0.61, 31.5, 153.60, 148.38,
+        0.67, 28.5, 178.82, 165.91
     ]);
 
     t.end();
