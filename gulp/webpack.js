@@ -1,16 +1,16 @@
-var webpack = require('webpack');
-var path = require('path');
-var gulp = require('gulp');
+const webpack = require('webpack');
+const path = require('path');
+const gulp = require('gulp');
 
-var dist_path = path.resolve(__dirname, '../dist');
-var app_entrypoint = path.resolve(__dirname, '../lib/index.js');
-var demo_entrypoint = path.resolve(__dirname, '../demo/demo.js');
+const dist_path = path.resolve(__dirname, '../dist');
+const app_entrypoint = path.resolve(__dirname, '../lib/regionLabel.js');
+const demo_entrypoint = path.resolve(__dirname, '../demo/demo.js');
 
-var vendor_deps = Object.keys(require('../package.json').dependencies);
-var extra_plugins = [];
-var appConf;
+const vendor_deps = Object.keys(require('../package.json').dependencies);
+const extra_plugins = [];
+let appConf;
 
-var doPack = function(conf, watch){
+const doPack = function(conf, watch){
 
     return new Promise((resolve, reject) => {
         const reportStats = (err, stats) => {

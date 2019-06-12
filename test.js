@@ -1,4 +1,4 @@
-import {RegionLabel} from "./lib/index.js";
+import {RegionLabel} from "./lib/regionLabel.js";
 import test from 'ava';
 
 import {

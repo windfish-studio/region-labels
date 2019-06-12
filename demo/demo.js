@@ -1,6 +1,6 @@
 'use strict';
 import cloneDeep from "lodash/cloneDeep";
-import {RegionLabel} from "../lib/index.js";
+import {RegionLabel} from "../lib/regionLabel.js";
 var raw_data = require('../data/index.js');
 var collateGeometry = require('./collate_geometry');
 
@@ -18,12 +18,17 @@ var initDemo = function () {
 
     var renderFeature = function(target){
 
-        rl = new RegionLabel(cloneDeep(target.groupCollection || target), {
+        const opts = {
             margin: 20,
             canvas: canvas,
-            label: target.label,
-            excludeFeatures: target.excludeFeatures
-        });
+            label: target.label
+        };
+
+        if(target.excludeFeatures !== undefined){
+            opts.excludeFeatures = target.excludeFeatures;
+        }
+
+        rl = new RegionLabel(cloneDeep(target.groupCollection || target), opts);
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
