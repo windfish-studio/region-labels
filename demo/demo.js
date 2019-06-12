@@ -1,7 +1,6 @@
 'use strict';
-
-var _ = require("lodash");
-var q = require("q");
+import cloneDeep from "lodash/cloneDeep";
+import {RegionLabel} from "../lib/index.js";
 var raw_data = require('../data/index.js');
 var collateGeometry = require('./collate_geometry');
 
@@ -19,7 +18,7 @@ var initDemo = function () {
 
     var renderFeature = function(target){
 
-        rl = new RegionLabel(_.cloneDeep(target.groupCollection || target), {
+        rl = new RegionLabel(cloneDeep(target.groupCollection || target), {
             margin: 20,
             canvas: canvas,
             label: target.label,
