@@ -1,54 +1,57 @@
-var RegionLabel = require('.');
-var tape = require('tape');
-var collateGeometry = require('./demo/collate_geometry');
-var _ = require('lodash');
-var chalk = require('chalk-log');
+import {RegionLabel} from "./lib/index.js";
+import test from 'ava';
 
-var geometries_ar = collateGeometry(require('./data/index'));
-var geometries_o = {};
+import {
+    flattenDeep,
+    flatten,
+    cloneDeep
+} from 'lodash';
+
+const collateGeometry = require('./demo/collate_geometry');
+const geometries_ar = collateGeometry(require('./data/index'));
+const geometries_o = {};
 geometries_ar.forEach(function (_item) {
     geometries_o[_item.name] = _item;
 });
 
-var roundArray = function(ar){
+const roundArray = function(ar){
     return ar.map(function (_item) {
         return parseFloat(_item.toFixed(2));
     })
 };
 
-var testLabelData = function (ld, t, expected_ar) {
-    t.equal(expected_ar.shift(), parseFloat(ld.fontSize.toFixed(2)));
-    t.deepEqual(expected_ar, roundArray(_.flattenDeep(ld.letters.map(function (_l) {
+const testLabelData = function (ld, t, expected_ar) {
+    t.is(expected_ar.shift(), parseFloat(ld.fontSize.toFixed(2)));
+    t.deepEqual(expected_ar, roundArray(flattenDeep(ld.letters.map(function (_l) {
         return [_l.angle, _l.width, _l.point];
     }))));
 };
 
-var testSplineData = function (sd, t, expected_ar) {
-    t.deepEqual(roundArray(_.flatten([sd.firstPoint, sd.lastPoint].map(function (_p) {
+const testSplineData = function (sd, t, expected_ar) {
+    t.deepEqual(roundArray(flatten([sd.firstPoint, sd.lastPoint].map(function (_p) {
         return _p.absolute;
     }))), expected_ar.splice(0,4), "spline entry/exit points are correct");
     t.deepEqual(roundArray(sd.spline.equation), expected_ar.splice(0,3), "spline equation matches");
-    t.deepEqual(roundArray(_.flatten([sd.longestRay.start, sd.longestRay.end])), expected_ar.splice(0,4), "longestRay data matches");
-    t.deepEqual(roundArray(_.flattenDeep(sd.midPointRays)), expected_ar, "longestRay data matches");
+    t.deepEqual(roundArray(flatten([sd.longestRay.start, sd.longestRay.end])), expected_ar.splice(0,4), "longestRay data matches");
+    t.deepEqual(roundArray(flattenDeep(sd.midPointRays)), expected_ar, "longestRay data matches");
 };
 
-tape('should generate labels for all test geographies without issue', function (t) {
-    t.doesNotThrow(function () {
+test('should generate labels for all test geographies without issue', function (t) {
+    t.notThrows(function () {
         geometries_ar.forEach(function (_o) {
-            chalk.log('Generating label for '+ _o.name);
-            var rl = new RegionLabel(_.cloneDeep(_o.groupCollection || _o), {
+            console.log('Generating label for '+ _o.name);
+            var rl = new RegionLabel(cloneDeep(_o.groupCollection || _o), {
                 canvasDims: [256, 256],
                 label: _o.label,
                 excludeFeatures: _o.excludeFeatures
             });
         });
     }, "should generate all test case labels");
-    t.end();
 });
 
-tape('should generate correct label data for Texas', function (t) {
+test('should generate correct label data for Texas', function (t) {
     var _o = geometries_o['Texas'];
-    var rl = new RegionLabel(_.cloneDeep(_o), {
+    var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
         label: _o.label
     });
@@ -67,13 +70,11 @@ tape('should generate correct label data for Texas', function (t) {
         48.18,
         0.38, 32.78, 74.86, 109.56, 0.46, 30.14, 104.32, 121.32, 0.54, 27.44, 130.46, 134.44, 0.61, 30.14, 153.32, 148.07, 0.67, 27.44, 177.49, 164.79
     ]);
-
-    t.end();
 });
 
-tape('should generate correct label data for New Jersey', function (t) {
+test('should generate correct label data for New Jersey', function (t) {
     var _o = geometries_o['New Jersey'];
-    var rl = new RegionLabel(_.cloneDeep(_o), {
+    var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
         label: _o.label
     });
@@ -85,13 +86,11 @@ tape('should generate correct label data for New Jersey', function (t) {
         108.87, 255.54, 157, 11.82,
         43.41, 179.31, 167.9, 203.89, 117.06, 130.54, 197.61, 146.45, 84.76, 60.86, 183.14, 80.29
     ]);
-
-    t.end();
 });
 
-tape('should generate correct label data for Hawaii', function (t) {
+test('should generate correct label data for Hawaii', function (t) {
     var _o = geometries_o['Hawaii'];
-    var rl = new RegionLabel(_.cloneDeep(_o), {
+    var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
         label: _o.label
     });
@@ -103,13 +102,11 @@ tape('should generate correct label data for Hawaii', function (t) {
         38.33, 50.49, 249.17, 184.68,
         93.03, 80.9, 93.17, 80.69, 152.41, 103.98, 155.66, 98.87, 204.85, 147.25, 207.85, 142.54
     ]);
-
-    t.end();
 });
 
-tape('should generate correct label data for Russia. Should wrap Iultinsky District', function (t) {
+test('should generate correct label data for Russia. Should wrap Iultinsky District', function (t) {
     var _o = geometries_o['Russia'];
-    var rl = new RegionLabel(_.cloneDeep(_o), {
+    var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
         label: _o.label
     });
@@ -122,7 +119,5 @@ tape('should generate correct label data for Russia. Should wrap Iultinsky Distr
         71.36, 104.87, 72.47, 137.84, 131.14, 103.04, 132.58, 145.93, 191.12, 107.23, 192.65, 152.65
     ]);
 
-    t.deepEquals(roundArray([sd.totalBbox.width, sd.totalBbox.height]), [256, 61.04]);
-
-    t.end();
+    t.deepEqual(roundArray([rl.totalBbox.width, rl.totalBbox.height]), [256, 61.04]);
 });

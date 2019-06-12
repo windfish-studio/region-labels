@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
-    "ava": "^2.0.0",
+    "ava": "^2.1.0",
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.3",
     "@babel/register": "^7.4.0",
