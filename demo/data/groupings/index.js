@@ -13,6 +13,17 @@ module.exports = [
 
     {
         "type": "Grouping",
+        "groupName": "test_usa_dbscan_labels",
+        "geojson": require('./us_border.json'),
+        "opts": {
+            "label": "United States",
+            "dbscanClustering": true
+        }
+
+    },
+
+    {
+        "type": "Grouping",
         "groupName": "test_usa_group_label",
         "geojson": require('../all_states.json'),
         "opts": {

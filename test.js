@@ -36,7 +36,15 @@ const testSplineData = function (sd, t, expected_ar) {
     t.deepEqual(roundArray(flattenDeep(sd.midPointRays)), expected_ar, "longestRay data matches");
 };
 
-test('should generate labels for all test geographies without issue', function (t) {
+test('should use DBSCAN to correctly separate USA into logical labeling groups', (t) => {
+    const _o = geometries_o['test_usa_dbscan_labels'];
+    const rl = new RegionLabel(cloneDeep(_o.geojson), Object.assign({
+        canvasDims: [256, 256]
+    }, _o.opts));
+    t.is(rl.groupData.length, 2, "should create two groups");
+});
+
+test('should generate labels for all test geographies without issue', (t) => {
     t.notThrows(function () {
         geometries_ar.forEach(function (_o) {
             console.log('Generating label for '+ _o.name);
@@ -57,7 +65,7 @@ test('should generate labels for all test geographies without issue', function (
     }, "should generate all test case labels");
 });
 
-test('should generate correct label data for Texas', function (t) {
+test('should generate correct label data for Texas', (t) => {
     var _o = geometries_o['Texas'];
     var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
@@ -80,7 +88,7 @@ test('should generate correct label data for Texas', function (t) {
     ]);
 });
 
-test('should generate correct label data for New Jersey', function (t) {
+test('should generate correct label data for New Jersey', (t) => {
     var _o = geometries_o['New Jersey'];
     var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
@@ -96,7 +104,7 @@ test('should generate correct label data for New Jersey', function (t) {
     ]);
 });
 
-test('should generate correct label data for Hawaii', function (t) {
+test('should generate correct label data for Hawaii', (t) => {
     var _o = geometries_o['Hawaii'];
     var rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
@@ -112,9 +120,9 @@ test('should generate correct label data for Hawaii', function (t) {
     ]);
 });
 
-test('should generate correct label data for Russia. Should wrap Iultinsky District', function (t) {
-    var _o = geometries_o['Russia'];
-    var rl = new RegionLabel(cloneDeep(_o), {
+test('should generate correct label data for Russia. Should wrap Iultinsky District', (t) => {
+    const _o = geometries_o['Russia'];
+    const rl = new RegionLabel(cloneDeep(_o), {
         canvasDims: [256, 256],
         label: _o.label
     });
