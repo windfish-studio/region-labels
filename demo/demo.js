@@ -18,17 +18,19 @@ var initDemo = function () {
 
     var renderFeature = function(target){
 
-        const opts = {
-            margin: 20,
-            canvas: canvas,
-            label: target.label
-        };
-
-        if(target.excludeFeatures !== undefined){
-            opts.excludeFeatures = target.excludeFeatures;
+        let opts;
+        if(target.type == 'Grouping'){
+            opts = Object.assign({}, target.opts);
+        }else{
+            opts = {};
         }
 
-        rl = new RegionLabel(cloneDeep(target.groupCollection || target), opts);
+        Object.assign(opts, {
+            margin: 20,
+            canvas: canvas
+        });
+
+        rl = new RegionLabel(cloneDeep(target.geojson || target), opts);
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 

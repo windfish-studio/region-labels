@@ -1,12 +1,12 @@
 //recursively collate the geojson data in the ./data folder,
 //normalize both the option name and the label
 module.exports = function collateGeometry(_d) {
-    var geojson_ar = [];
+    let geojson_ar = [];
 
-    var appendResult = function (_d) {
+    const appendResult = function (_d) {
+        _d.label = ((_d.opts)? _d.opts.label : null) || _d.properties.NAME || _d.groupName;
+        _d.name = _d.groupName || _d.label;
         geojson_ar.push(_d);
-        _d.label = _d.label ||_d.properties.NAME || _d.optionsName;
-        _d.name = _d.optionsName || _d.label;
     };
 
     if(_d instanceof Array){

@@ -40,11 +40,19 @@ test('should generate labels for all test geographies without issue', function (
     t.notThrows(function () {
         geometries_ar.forEach(function (_o) {
             console.log('Generating label for '+ _o.name);
-            var rl = new RegionLabel(cloneDeep(_o.groupCollection || _o), {
-                canvasDims: [256, 256],
-                label: _o.label,
-                excludeFeatures: _o.excludeFeatures
+
+            let opts;
+            if(_o.type == 'Grouping'){
+                opts = Object.assign({}, _o.opts);
+            }else{
+                opts = {};
+            }
+
+            Object.assign(opts, {
+                canvasDims: [256, 256]
             });
+
+            new RegionLabel(cloneDeep(_o.geojson || _o), opts);
         });
     }, "should generate all test case labels");
 });
