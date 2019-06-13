@@ -32,5 +32,10 @@ module.exports = function collateGeometry(_d) {
                 geojson_ar = geojson_ar.concat(collateGeometry(_v));
             });
     }
+
+    geojson_ar.sort((a,b) => {
+        return (a.name > b.name)? 1 : -1;
+    });
+
     return geojson_ar;
 };

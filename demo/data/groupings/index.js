@@ -1,23 +1,23 @@
 module.exports = [
     {
         "type": "Grouping",
-        "groupName": "test_usa_individual_labels",
-        "geojson": require('../all_states.json'),
+        "groupName": "test_usa_dbscan_labels",
+        "geojson": require('./us_border.json'),
         "opts": {
-            "label": function (_props) {
-                return _props.NAME;
-            }
+            "label": "United States",
+            "dbscanClustering": true
         }
 
     },
 
     {
         "type": "Grouping",
-        "groupName": "test_usa_dbscan_labels",
-        "geojson": require('./us_border.json'),
+        "groupName": "test_usa_individual_labels",
+        "geojson": require('../all_states.json'),
         "opts": {
-            "label": "United States",
-            "dbscanClustering": true
+            "label": function (_props) {
+                return _props.NAME;
+            }
         }
 
     },
