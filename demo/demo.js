@@ -1,7 +1,7 @@
 'use strict';
 import cloneDeep from "lodash/cloneDeep";
 import {RegionLabel} from "../lib/regionLabel.js";
-var raw_data = require('../data/index.js');
+var raw_data = require('./data/index.js');
 var collateGeometry = require('./collate_geometry');
 
 var rl;
