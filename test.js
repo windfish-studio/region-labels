@@ -127,5 +127,5 @@ test('should generate correct label data for Russia. Should wrap Iultinsky Distr
         71.36, 104.87, 72.47, 137.84, 131.14, 103.04, 132.58, 145.93, 191.12, 107.23, 192.65, 152.65
     ]);
 
-    t.deepEqual(roundArray([rl.totalBbox.width, rl.totalBbox.height]), [256, 61.04]);
+    t.deepEqual(roundArray([rl.bbox.normalized.width, rl.bbox.normalized.height]), [256, 61.04]);
 });
