@@ -16,7 +16,7 @@
       "url": "https://github.com/olagbk"
     }
   ],
-  "main": "lib/index.js",
+  "main": "lib/regionLabel.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/sikanrong/region-labels.git"
