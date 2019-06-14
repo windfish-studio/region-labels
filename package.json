@@ -2,6 +2,9 @@
   "name": "@windfish-studio/region-labels",
   "version": "1.1.1",
   "scripts": {
+    "build": "babel lib --out-dir cjs",
+    "prepublish": "npm run build",
+    "install": "npm run build",
     "test": "ava --tap test/test.js"
   },
   "contributors": [
@@ -16,7 +19,8 @@
       "url": "https://github.com/olagbk"
     }
   ],
-  "main": "lib/regionLabel.js",
+  "main": "cjs/regionLabel.js",
+  "module": "lib/regionLabel.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/sikanrong/region-labels.git"
