@@ -5,7 +5,8 @@ module.exports = [
         "geojson": require('./italy.json'),
         "opts": {
             "label": "Italy",
-            "dbscanClustering": true
+            "dbscanClustering": true,
+            "dbscanPointDensity": 50
         }
     },
 
