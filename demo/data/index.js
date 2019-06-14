@@ -1,7 +1,6 @@
 
 module.exports = [
-    require("./groupings/index"),
+    require("./groupings"),
     require("./edge_cases.json"),
-    require("./all_states.json"),
-    require("./edgecase_geo/index")
+    require("./all_states.json")
 ];

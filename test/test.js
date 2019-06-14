@@ -10,7 +10,8 @@ import {
 import * as $expected from "./expected.json";
 
 const collateGeometry = require('../demo/collate_geometry');
-const geometries_ar = collateGeometry(require('../demo/data/index'));
+const rawData = require('../demo/data').concat(require('./edgecase_geo'));
+const geometries_ar = collateGeometry(rawData);
 const geometries_o = {};
 geometries_ar.forEach(function (_item) {
     geometries_o[_item.name] = _item;

@@ -1,6 +1,16 @@
 module.exports = [
     {
         "type": "Grouping",
+        "groupName": "test_italy_dbscan_labels",
+        "geojson": require('./italy.json'),
+        "opts": {
+            "label": "Italy",
+            "dbscanClustering": true
+        }
+    },
+
+    {
+        "type": "Grouping",
         "groupName": "test_usa_dbscan_labels",
         "geojson": require('./us_border.json'),
         "opts": {
